@@ -12,24 +12,25 @@ print(df.columns)
 print("Информация о датафрейме:")
 print(df.info())
 print("\nПервые 5 строк датафрейма:")
-print(df.head())
+print(df.head(5))
 
 # 4. Отобразите в виде столбчатой диаграммы страны ('geography') по среднему балансу счетов клиентов банка ('balance').
 # Группируем по странам и вычисляем средний баланс
 avg_balance_by_geography = df.groupby('geography')['balance'].mean().reset_index()
+print(avg_balance_by_geography.head(10))
 
 plt.figure(figsize=(10, 6))
 sns.barplot(data=avg_balance_by_geography, x='geography', y='balance', palette='viridis')
 plt.title('Средний баланс по странам')
 plt.xlabel('Страна')
 plt.ylabel('Средний баланс')
-plt.show()
+# plt.show()
 
 # 5. Добавьте к существующему датафрейму столбец, содержащий средний баланс счета клиента по стране.
 # Один из вариантов – использование map с заранее вычисленным словарем средних значений:
 avg_balance_dict = df.groupby('geography')['balance'].mean().to_dict()
+# print(avg_balance_dict)
 df['avg_balance_by_country'] = df['geography'].map(avg_balance_dict)
-
 print("\nДатафрейм с добавленным столбцом среднего баланса по стране:")
 print(df.head())
 
@@ -37,8 +38,9 @@ print(df.head())
 # Предполагаем, что в наборе данных есть столбец 'num_of_products', обозначающий количество продуктов.
 # Группируем данные по 'geography' и 'gender', суммируем количество продуктов, затем строим накопительную диаграмму.
 df_products = df.groupby(['geography', 'gender'])['numofproducts'].sum().unstack()
-
+print(df_products.head())
 df_products.plot(kind='bar', stacked=True, figsize=(10, 6), colormap='Paired')
+
 plt.title('Общее количество продуктов по странам и полу')
 plt.xlabel('Страна')
 plt.ylabel('Общее количество продуктов')
